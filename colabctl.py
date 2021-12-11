@@ -39,7 +39,7 @@ def exists_by_xpath(driver, thex, howlong):
 def exists_by_text(driver, text):
     driver.implicitly_wait(2)
     try:
-        driver.find_element_by_xpath("//*[contains(text(), '"+str(text)+"')]")
+        driver.find_element(By. XPATH, "//*[contains(text(), '"+str(text)+"')]")
     except NoSuchElementException:
         driver.implicitly_wait(5)
         return False
@@ -49,7 +49,7 @@ def exists_by_text(driver, text):
 
 def user_logged_in(driver):
     try:
-        driver.find_element_by_xpath('//*[@id="file-type"]')
+        driver.find_element(By.XPATH, '//*[@id="file-type"]')
     except NoSuchElementException:
         driver.implicitly_wait(5)
         return False
@@ -60,7 +60,7 @@ def user_logged_in(driver):
 def wait_for_xpath(driver, x):
     while True:
         try:
-            driver.find_element_by_xpath(x)
+            driver.find_element(By.XPATH, x)
             return True
         except:
             time.sleep(0.1)
@@ -161,36 +161,36 @@ while True:
         print('Notebook loaded.')
         sleep(10)
 
-        while not exists_by_text(wd, "Sign in"):
+        while exists_by_text(wd, "Sign in"):
             if exists_by_text(wd, "Runtime disconnected"):
                 try:
-                    wd.find_element_by_xpath('//*[@id="ok"]').click()
+                    wd.find_element(By.XPATH, '//*[@id="ok"]').click()
                 except NoSuchElementException:
                     pass
             if exists_by_text2(wd, "Notebook loading error"):
                 wd.get(colab_url)
             try:
-                wd.find_element_by_xpath('//*[@id="file-menu-button"]/div/div/div[1]')
+                wd.find_element(By.XPATH, '//*[@id="file-menu-button"]/div/div/div[1]')
                 if not running:
-                    wd.find_element_by_tag_name('body').send_keys(Keys.CONTROL + Keys.SHIFT + "q")
-                    wd.find_element_by_tag_name('body').send_keys(Keys.CONTROL + Keys.SHIFT + "k")
-                    exists_by_xpath(wd, '//*[@id="ok"]', 10)
-                    wd.find_element_by_xpath('//*[@id="ok"]').click()
+                    wd.find_element(By.TAG_NAME, 'body').send_keys(Keys.CONTROL + Keys.SHIFT + "q")
+                    wd.find_element(By.TAG_NAME, 'body').send_keys(Keys.CONTROL + Keys.SHIFT + "k")
+                    if (exists_by_xpath(wd, '//*[@id="ok"]', 10)):
+                        wd.find_element(By.XPATH, '//*[@id="ok"]').click()
                     sleep(10)
-                    wd.find_element_by_tag_name('body').send_keys(Keys.CONTROL + Keys.F9)
+                    wd.find_element(By.TAG_NAME, 'body').send_keys(Keys.CONTROL + Keys.F9)
                     running = True
             except NoSuchElementException:
                 pass
             if running:
                 try:
-                    wd.find_element_by_css_selector('.notebook-content-background').click()
+                    wd.find_element(By.CSS_SELECTOR, '.notebook-content-background').click()
                     #actions = ActionChains(wd)
                     #actions.send_keys(Keys.SPACE).perform()
                     scroll_to_bottom(wd)
                     print("performed scroll")
                 except:
                     pass
-                for frame in wd.find_elements_by_tag_name('iframe'):
+                for frame in wd.find_elements(By.TAG_NAME, 'iframe'):
                     wd.switch_to.frame(frame)
                     '''
                     links = browser.find_elements_by_partial_link_text('oauth2/auth')
@@ -200,7 +200,7 @@ while True:
                         wd.find_element_by_css_selector('#submit_approve_access>content:nth-child(3)>span:nth-child(1)').click()
                         auth_code = wd.find_element_by_xpath('/html/body/div[1]/div[1]/div[2]/div[2]/div/div/div[2]/div/div/div/form/content/section/div/content/div/div/div/textarea').text
                     '''
-                    for output in wd.find_elements_by_tag_name('pre'):
+                    for output in wd.find_elements(By.TAG_NAME, 'pre'):
                         if fork in output.text:
                             running = False
                             complete = True
