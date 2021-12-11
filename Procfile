@@ -1,0 +1,1 @@
+web: gunicorn colabctl:app --log-file -
