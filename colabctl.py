@@ -145,7 +145,7 @@ if exists_by_text(wd, "Sign in"):
     chrome_options_gui.add_argument('--disable-infobars')
     wd = webdriver.Chrome('chromedriver', options=chrome_options_gui)
     wd.get("https://accounts.google.com/signin")
-    wait_for_xpath(wd, '//*[@id="yDmH0d"]/c-wiz/div/div[2]/c-wiz/c-wiz/div/div[4]/div/div/header/div[2]')
+    wait_for_xpath(wd, '//*[@id="yDmH0d"]')
     print("Login detected. Saving cookie & restarting connection.")
     pickle.dump(wd.get_cookies(), open("gCookies.pkl", "wb"))
     wd.close()
