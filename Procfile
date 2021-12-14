@@ -1,1 +1,1 @@
-web: gunicorn colabctl:app --log-file -
+web: python colabctl.py end 180
